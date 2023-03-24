@@ -4,7 +4,7 @@ import { useNewsStore } from "../stores/NewsStore";
 
 const newsStore = useNewsStore();
 
-newsStore.getApi();
+newsStore.getApiBusiness();
 </script>
 
 <template>

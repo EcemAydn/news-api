@@ -4,9 +4,8 @@ import { useNewsStore } from "../stores/NewsStore";
 
 const newsStore = useNewsStore();
 
-newsStore.getApi();
+newsStore.getApiSports();
 </script>
-
 <template>
   <div class="w-full h-full">
     <Navbar />
