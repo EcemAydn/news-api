@@ -1,29 +1,67 @@
 <script setup>
+import { ref } from "vue";
 import Navbar from "../components/Navbar.vue";
 import { useNewsStore } from "../stores/NewsStore";
 
 const newsStore = useNewsStore();
+const randomUrl = ref("https://picsum.photos/200/100");
+const randomUrl2 = ref("https://picsum.photos/900/700");
+let selectedIndex = 1;
 
 newsStore.getApi();
+
+function next() {
+  const selectedElement = document.getElementById(`slide-${selectedIndex}`);
+  const slider = document.getElementById("slider");
+
+  slider.scrollLeft = selectedElement.offsetLeft;
+  selectedIndex += 1;
+
+  if (selectedIndex >= newsStore.news.length) {
+    selectedIndex = 0;
+  }
+}
+function back() {
+  const selectedElement = document.getElementById(`slide-${selectedIndex}`);
+  const slider = document.getElementById("slider");
+
+  slider.scrollLeft = selectedElement.offsetLeft;
+  selectedIndex -= 1;
+
+  if (selectedIndex === 0) {
+    selectedIndex = 1;
+  }
+}
 </script>
 
 <template>
-  <div class="w-full h-full relative">
+  <div class="w-full h-full">
     <Navbar />
+
     <div
-      v-for="newitem in newsStore.news"
-      :key="newitem.id"
-      class="w-full h-full flex gap-6 relative"
+      id="slider"
+      class="w-full h-full flex items-center gap-6 flex-nowrap overflow-x-auto snap-x scroll-smooth px-6"
     >
       <img
-        :src="newitem.urlToImage"
+        v-for="(newitem, index) in newsStore.news"
+        :key="`slide-${index}`"
+        :src="newitem.urlToImage === null ? randomUrl2 : newitem.urlToImage"
         alt="Photo"
-        class="border-8 absolute rounded-md top-8 flex blur-sm"
+        class="rounded-md h-[700px] flex-shrink-0 snap-center"
+        :id="`slide-${index}`"
       />
     </div>
-    <div
-      class="w-full h-full grid md:grid-cols-3 gap-6 md:gap-10 p-8 relative bottom-0 top-96"
-    >
+
+    <div class="flex items-center gap-4 p-2 justify-center">
+      <button @click="back" class="bg-red-300 text-white text-xl p-2">
+        Back
+      </button>
+      <button @click="next" class="bg-red-300 text-white text-xl p-2">
+        Next
+      </button>
+    </div>
+
+    <div class="w-full h-full grid md:grid-cols-3 gap-6 md:gap-10 p-8">
       <div
         v-for="newitem in newsStore.news"
         :key="newitem.id"
@@ -33,10 +71,20 @@ newsStore.getApi();
           {{ newitem.title }}
         </div>
         <div>
-          <img :src="newitem.urlToImage" alt="Photo" class="rounded-md" />
+          <img
+            :src="newitem.urlToImage === null ? randomUrl : newitem.urlToImage"
+            alt="Photo"
+            class="rounded-md"
+          />
         </div>
         <div>
-          {{ newitem.description }}
+          {{
+            newitem.description
+              ? newitem.description
+              : newitem.content
+              ? newitem.content
+              : "-"
+          }}
           <a :href="newitem.url" class="font-bold text-blue-400">continue</a>
         </div>
       </div>
