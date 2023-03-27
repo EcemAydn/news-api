@@ -4,6 +4,9 @@ import api from "../util/newsApi";
 
 export const useNewsStore = defineStore("news", () => {
   const news = ref([]);
+  const newsSports = ref([]);
+  const newsBusiness = ref([]);
+
   function getApi() {
     api
       .get("/top-headlines", {
@@ -13,7 +16,9 @@ export const useNewsStore = defineStore("news", () => {
         },
       })
       .then((response) => {
-        console.log(response.data);
+        // news.value.push(response.data.articles);
+        // console.log(response.data.articles);
+        news.value = response.data.articles;
       });
   }
 
@@ -27,7 +32,7 @@ export const useNewsStore = defineStore("news", () => {
         },
       })
       .then((response) => {
-        console.log(response.data.articles);
+        newsSports.value = response.data.articles;
       });
   }
 
@@ -41,8 +46,15 @@ export const useNewsStore = defineStore("news", () => {
         },
       })
       .then((response) => {
-        console.log(response.data);
+        newsBusiness.value = response.data.articles;
       });
   }
-  return { news, getApi, getApiSports, getApiBusiness };
+  return {
+    news,
+    newsSports,
+    newsBusiness,
+    getApi,
+    getApiSports,
+    getApiBusiness,
+  };
 });
