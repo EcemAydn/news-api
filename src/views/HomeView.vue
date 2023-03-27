@@ -4,7 +4,7 @@ import Navbar from "../components/Navbar.vue";
 import { useNewsStore } from "../stores/NewsStore";
 
 const newsStore = useNewsStore();
-const randomUrl = ref("https://picsum.photos/200/100");
+const randomUrl = ref("https://picsum.photos/300/100");
 const randomUrl2 = ref("https://picsum.photos/900/700");
 let selectedIndex = 1;
 
@@ -40,7 +40,7 @@ function back() {
 
     <div
       id="slider"
-      class="w-full h-full flex items-center gap-6 flex-nowrap overflow-x-auto snap-x scroll-smooth px-6"
+      class="w-full h-full flex items-center gap-6 flex-nowrap pt-8 overflow-x-auto snap-x scroll-smooth px-6"
     >
       <img
         v-for="(newitem, index) in newsStore.news"
@@ -52,18 +52,30 @@ function back() {
       />
     </div>
 
-    <div class="flex items-center gap-4 p-2 justify-center">
-      <button @click="back" class="bg-red-300 text-white text-xl p-2">
-        Back
-      </button>
-      <button @click="next" class="bg-red-300 text-white text-xl p-2">
-        Next
-      </button>
+    <div
+      class="flex items-center justify-between gap-4 p-2 w-full absolute bottom-16 top-16"
+    >
+      <div>
+        <button
+          @click="back"
+          class="bg-black/30 text-white text-xl p-4 rounded-full"
+        >
+          Back
+        </button>
+      </div>
+      <div>
+        <button
+          @click="next"
+          class="bg-black/30 text-white text-xl p-4 rounded-full"
+        >
+          Next
+        </button>
+      </div>
     </div>
 
     <div class="w-full h-full grid md:grid-cols-3 gap-6 md:gap-10 p-8">
       <div
-        v-for="newitem in newsStore.news"
+        v-for="newitem in newsStore.searchNews(search)"
         :key="newitem.id"
         class="flex flex-col w-full h-full gap-6 bg-white shadow-md p-4 rounded-md"
       >
@@ -74,7 +86,7 @@ function back() {
           <img
             :src="newitem.urlToImage === null ? randomUrl : newitem.urlToImage"
             alt="Photo"
-            class="rounded-md"
+            class="rounded-md h-[300px]"
           />
         </div>
         <div>
