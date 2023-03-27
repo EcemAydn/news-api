@@ -1,7 +1,7 @@
 <!-- eslint-disable vue/multi-word-component-names -->
 <template>
   <div
-    class="flex bg-zinc-600 items-center justify-between p-4 md:p-6 font-light text-white rounded-b-md"
+    class="flex bg-gradient-to-b from-zinc-600 items-center justify-between p-4 md:p-12 font-light text-white rounded-b-md"
   >
     <h1>NEWS</h1>
     <div class="flex gap-8">
