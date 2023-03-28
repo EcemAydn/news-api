@@ -27,6 +27,16 @@ const router = createRouter({
       name: "details",
       component: () => import("../views/DetailsHome.vue"),
     },
+    {
+      path: "/detailsSport/:id",
+      name: "detailsSport",
+      component: () => import("../views/DetailsSports.vue"),
+    },
+    {
+      path: "/detailsBusiness/:id",
+      name: "detailsBusiness",
+      component: () => import("../views/DetailsBusiness.vue"),
+    },
   ],
 });
 
