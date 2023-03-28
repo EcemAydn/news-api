@@ -1,11 +1,13 @@
 <script setup>
 import Navbar from "../components/Navbar.vue";
 import { useNewsStore } from "../stores/NewsStore";
-import { useRoute } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 import { onMounted, ref } from "vue";
 
 const newsStore = useNewsStore();
 const route = useRoute();
+const router = useRouter();
+const randomUrl2 = ref("https://picsum.photos/900/700");
 const newList = ref({
   title: "",
   img: "",
@@ -19,6 +21,7 @@ onMounted(async () => {
     console.log(newList.value);
     console.log(route.params.id);
   } else {
+    router.push("/");
     console.log("olmadı");
   }
 });
@@ -32,7 +35,10 @@ newsStore.getApi();
       class="w-fit h-fit flex items-center p-8 justify-center bg-white rounded-md shadow-lg"
     >
       <div class="flex flex-col gap-8 relative">
-        <img :src="newList.urlToImage" alt="Photo" />
+        <img
+          :src="newList.urlToImage === null ? randomUrl2 : newList.urlToImage"
+          alt="Photo"
+        />
         <div
           class="absolute z-20 text-white bottom-40 text-2xl bg-gradient-to-r from-black font-bold p-8"
         >
