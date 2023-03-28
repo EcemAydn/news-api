@@ -1,5 +1,6 @@
 <script setup>
 import Navbar from "../components/Navbar.vue";
+import Footer from "../components/Footer.vue";
 import { useNewsStore } from "../stores/NewsStore";
 import { useRoute, useRouter } from "vue-router";
 import { onMounted, ref } from "vue";
@@ -49,4 +50,5 @@ newsStore.getApi();
       </div>
     </div>
   </div>
+  <Footer />
 </template>

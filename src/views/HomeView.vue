@@ -1,6 +1,7 @@
 <script setup>
 import { ref } from "vue";
 import Navbar from "../components/Navbar.vue";
+import Footer from "../components/Footer.vue";
 import { useNewsStore } from "../stores/NewsStore";
 
 const newsStore = useNewsStore();
@@ -109,6 +110,7 @@ function back() {
         </div>
       </div>
     </div>
+    <Footer />
   </div>
 </template>
 <!-- <a :href="newitem.url" class="font-bold text-blue-400">continue</a> -->
