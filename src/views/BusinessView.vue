@@ -1,44 +1,115 @@
 <script setup>
+import { ref } from "vue";
 import Navbar from "../components/Navbar.vue";
+import Footer from "../components/Footer.vue";
 import { useNewsStore } from "../stores/NewsStore";
 
 const newsStore = useNewsStore();
+const randomUrl = ref("https://picsum.photos/300/100");
+const randomUrl2 = ref("https://picsum.photos/900/700");
+let selectedIndex = 1;
 
 newsStore.getApiBusiness();
+
+function next() {
+  const selectedElement = document.getElementById(`slide-${selectedIndex}`);
+  const slider = document.getElementById("slider");
+
+  slider.scrollLeft = selectedElement.offsetLeft;
+  selectedIndex += 1;
+
+  if (selectedIndex >= newsStore.newsBusiness.length) {
+    selectedIndex = 0;
+  }
+}
+function back() {
+  const selectedElement = document.getElementById(`slide-${selectedIndex}`);
+  const slider = document.getElementById("slider");
+
+  slider.scrollLeft = selectedElement.offsetLeft;
+  selectedIndex -= 1;
+
+  if (selectedIndex === 0) {
+    selectedIndex = 1;
+  }
+}
 </script>
+
 <template>
-  <div class="w-full h-full relative">
+  <div class="w-full h-full bg-zinc-100">
     <Navbar />
+
     <div
-      v-for="newitem in newsStore.newsBusiness"
-      :key="newitem.id"
-      class="w-full h-full flex gap-6 relative"
+      id="slider"
+      class="w-full h-full flex items-center gap-6 flex-nowrap pt-8 overflow-x-auto snap-x scroll-smooth px-6"
     >
       <img
-        :src="newitem.urlToImage"
+        v-for="(newitem, index) in newsStore.newsBusiness"
+        :key="`slide-${index}`"
+        :src="newitem.urlToImage === null ? randomUrl2 : newitem.urlToImage"
         alt="Photo"
-        class="border-8 absolute rounded-md top-8 flex blur-sm"
+        class="rounded-md h-[700px] flex-shrink-0 snap-center"
+        :id="`slide-${index}`"
       />
     </div>
+
     <div
-      class="w-full h-full grid md:grid-cols-3 gap-6 md:gap-10 p-8 relative bottom-0 top-96"
+      class="flex items-center justify-between gap-4 p-2 w-full absolute bottom-16 top-16"
+    >
+      <div>
+        <button
+          @click="back"
+          class="bg-black/30 text-white text-3xl p-8 rounded-full"
+        >
+          ←
+        </button>
+      </div>
+      <div>
+        <button
+          @click="next"
+          class="bg-black/30 text-white text-3xl p-8 rounded-full"
+        >
+          →
+        </button>
+      </div>
+    </div>
+
+    <div
+      class="w-full bg-zinc-100 grid md:grid-cols-3 gap-6 md:gap-10 justify-around p-8"
     >
       <div
         v-for="newitem in newsStore.newsBusiness"
         :key="newitem.id"
-        class="flex flex-col w-full h-full gap-6 bg-white shadow-md p-4 rounded-md"
+        class="flex flex-col justify-around w-full h-full gap-2 bg-white shadow-md p-4 rounded-md"
       >
         <div class="font-bold">
           {{ newitem.title }}
         </div>
         <div>
-          <img :src="newitem.urlToImage" alt="Photo" class="rounded-md" />
+          <img
+            :src="newitem.urlToImage === null ? randomUrl : newitem.urlToImage"
+            alt="Photo"
+            class="rounded-md h-[300px]"
+          />
         </div>
         <div>
-          {{ newitem.description }}
-          <a :href="newitem.url" class="font-bold">continue</a>
+          {{
+            newitem.description
+              ? newitem.description
+              : newitem.content
+              ? newitem.content
+              : "-"
+          }}
+        </div>
+        <div>
+          <router-link
+            :to="{ name: 'detailsBusiness', params: { id: newitem.myId } }"
+            class="font-bold text-black"
+            >Details
+          </router-link>
         </div>
       </div>
     </div>
+    <Footer />
   </div>
 </template>
