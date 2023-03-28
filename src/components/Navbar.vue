@@ -3,18 +3,26 @@
 import { ref } from "vue";
 import { useNewsStore } from "../stores/NewsStore";
 
+defineProps({
+  countryShow: {
+    type: Boolean,
+    default: false,
+  },
+});
+
 const newsStore = useNewsStore();
 const dropdownShow = ref(false);
-const selectedCountry = ref("us");
-let timeout = null;
+// let timeout = null;
 const search = ref("");
+const selectedCountry = ref(newsStore.selectedCountry);
+// console.log(navigator.language);
 
-function searchNews() {
-  clearTimeout(timeout);
-  timeout = setTimeout(() => {
-    newsStore.searchNews(search.value.toLowerCase());
-  }, 500);
-}
+// function searchNews() {
+//   clearTimeout(timeout);
+//   timeout = setTimeout(() => {
+//     newsStore.searchNews(search.value.toLowerCase());
+//   }, 500);
+// }
 
 function dropdown() {
   dropdownShow.value = true;
@@ -22,50 +30,46 @@ function dropdown() {
     dropdownShow.value = false;
   }, 3000);
 }
-
 function selectCountry(country) {
   selectedCountry.value = country;
-  newsStore.getApi(selectedCountry.value);
+  newsStore.setSelectedCountry(selectedCountry.value);
 }
 </script>
 <template>
   <div
-    class="fixed z-10 flex w-full bg-gradient-to-b from-black items-center justify-between p-4 md:p-12 font-light text-white"
+    class="fixed z-10 grid lg:grid-cols-3 w-full bg-gradient-to-b from-black items-center justify-between p-4 md:p-12 font-thin text-gray-300"
   >
-    <h1 class="text-xl">NEWS</h1>
-    <input
-      type="search"
-      @keyup="searchNews"
-      v-model="search"
-      class="w-full border bg-transparent rounded-md outline-none p-1 mt-2 mx-16"
-    />
-    <div class="flex gap-8">
-      <RouterLink
-        to="/"
-        active-class="border-red-300 text-red-300"
-        class="border-b-2 p-2"
-        >Home
+    <div class="flex col-span-2">
+      <h1 class="text-xl text-white">NEWS</h1>
+      <input
+        type="search"
+        @keyup="searchNews"
+        v-model="search"
+        class="w-full border bg-transparent text-xs rounded-md outline-none md:p-1 mx-2 md:mx-8 lg:mx-16"
+      />
+    </div>
+    <div class="flex text-xs md:text-lg gap-2 md:gap-8 md:justify-end">
+      <RouterLink to="/" active-class="text-white font-normal" class="p-2">
+        Home
       </RouterLink>
-      <RouterLink
-        to="/sports"
-        active-class="border-red-300 text-red-300"
-        class="border-b-2 p-2"
+      <RouterLink to="/sports" active-class="text-white font-normal" class="p-2"
         >Sport
       </RouterLink>
       <RouterLink
         to="/business"
-        active-class="border-red-300 text-red-300"
-        class="border-b-2 p-2"
+        active-class="text-white font-normal"
+        class="p-2"
         >Business
       </RouterLink>
       <button
+        v-if="!countryShow"
         @click="dropdown"
-        class="w-full relative focus:text-red-300 border-b-2 p-2"
+        class="relative focus:text-white p-2"
       >
-        Country
+        Country ↓
         <div
           v-if="dropdownShow"
-          class="absolute top-10 right-0 text-red-300 p-4 pl-6 pr-6 bg-white shadow-md rounded-b-lg"
+          class="absolute flex flex-col top-10 right-4 text-gray-400 p-4 pl-6 pr-6 bg-white shadow-md rounded-b-lg"
         >
           <button @click="selectCountry('us')" class="hover:font-black">
             US
