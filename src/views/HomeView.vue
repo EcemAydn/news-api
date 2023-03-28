@@ -35,7 +35,7 @@ function back() {
 </script>
 
 <template>
-  <div class="w-full h-full">
+  <div class="w-full h-full bg-zinc-100">
     <Navbar />
 
     <div
@@ -58,26 +58,28 @@ function back() {
       <div>
         <button
           @click="back"
-          class="bg-black/30 text-white text-xl p-4 rounded-full"
+          class="bg-black/30 text-white text-3xl p-8 rounded-full"
         >
-          Back
+          ←
         </button>
       </div>
       <div>
         <button
           @click="next"
-          class="bg-black/30 text-white text-xl p-4 rounded-full"
+          class="bg-black/30 text-white text-3xl p-8 rounded-full"
         >
-          Next
+          →
         </button>
       </div>
     </div>
 
-    <div class="w-full h-full grid md:grid-cols-3 gap-6 md:gap-10 p-8">
+    <div
+      class="w-full bg-zinc-100 grid md:grid-cols-3 gap-6 md:gap-10 justify-around p-8"
+    >
       <div
-        v-for="newitem in newsStore.searchNews(search)"
+        v-for="newitem in newsStore.news"
         :key="newitem.id"
-        class="flex flex-col w-full h-full gap-6 bg-white shadow-md p-4 rounded-md"
+        class="flex flex-col justify-around w-full h-full gap-2 bg-white shadow-md p-4 rounded-md"
       >
         <div class="font-bold">
           {{ newitem.title }}
@@ -97,9 +99,16 @@ function back() {
               ? newitem.content
               : "-"
           }}
-          <a :href="newitem.url" class="font-bold text-blue-400">continue</a>
+        </div>
+        <div>
+          <router-link
+            :to="{ name: 'details', params: { id: newitem.myId } }"
+            class="font-bold text-black"
+            >Details
+          </router-link>
         </div>
       </div>
     </div>
   </div>
 </template>
+<!-- <a :href="newitem.url" class="font-bold text-blue-400">continue</a> -->
