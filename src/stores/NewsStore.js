@@ -1,4 +1,4 @@
-import { ref, computed } from "vue";
+import { ref } from "vue";
 import { defineStore } from "pinia";
 import api from "../util/newsApi";
 
@@ -6,30 +6,29 @@ export const useNewsStore = defineStore("news", () => {
   const news = ref([]);
   const newsSports = ref([]);
   const newsBusiness = ref([]);
-  const selectedCountry = ref("us");
 
-  const searchNews = computed(() => (search) => {
-    return news.value.filter(
-      (item) => item.title.includes(search) || item.description.includes(search)
-    );
-  });
+
 
   function getApi(country) {
     return new Promise((resolve, reject) => {
       api
         .get("/top-headlines", {
           params: {
-            country: country,
+            country: country || "us",
             category: "general",
             apiKey: import.meta.env.VITE_NEWS_API_KEY,
           },
         })
         .then((response) => {
+          response.data.articles.forEach((item, index) => {
+            item.myId = index + 1;
+          });
           news.value = response.data.articles;
           resolve("Success");
         })
-        .catch((error) => {
-          reject(error.response.data.message);
+        .catch((response) => {
+          console.log(response);
+          reject(response);
         });
     });
   }
@@ -61,14 +60,18 @@ export const useNewsStore = defineStore("news", () => {
         newsBusiness.value = response.data.articles;
       });
   }
+
+  function getNewsById(id) {
+    return news.value.find((item) => item.myId == id);
+  }
+
   return {
     news,
     newsSports,
-    searchNews,
     newsBusiness,
     getApi,
     getApiSports,
     getApiBusiness,
-    selectedCountry,
+    getNewsById,
   };
 });
