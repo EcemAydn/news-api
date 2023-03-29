@@ -6,7 +6,9 @@ import { Phone } from "lucide-vue-next";
 import { Mail } from "lucide-vue-next";
 </script>
 <template>
-  <div class="bg-white p-8 grid md:grid-cols-3 gap-8 text-black font-light">
+  <div
+    class="bg-white p-8 md:pl-20 pl-10 grid md:grid-cols-3 gap-4 text-black font-light"
+  >
     <div class="md:col-span-2 text-xs md:text-base">
       <h1
         class="bg-gradient-to-r from-white text-base md:text-lg text-black font-black"

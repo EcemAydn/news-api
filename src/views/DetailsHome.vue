@@ -41,7 +41,7 @@ newsStore.getApi();
           alt="Photo"
         />
         <div
-          class="absolute z-20 text-white bottom-40 text-2xl bg-gradient-to-r from-black font-bold p-8"
+          class="absolute z-20 text-white bottom-60 md:bottom-40 text-xs md:text-2xl bg-gradient-to-r from-black font-bold md:p-8"
         >
           {{ newList.title }}
         </div>
