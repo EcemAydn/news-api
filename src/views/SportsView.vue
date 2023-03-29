@@ -3,6 +3,8 @@ import { ref } from "vue";
 import Navbar from "../components/Navbar.vue";
 import Footer from "../components/Footer.vue";
 import { useNewsStore } from "../stores/NewsStore";
+import { ChevronLeft } from "lucide-vue-next";
+import { ChevronRight } from "lucide-vue-next";
 
 const newsStore = useNewsStore();
 const randomUrl = ref("https://picsum.photos/300/100");
@@ -29,8 +31,8 @@ function back() {
   slider.scrollLeft = selectedElement.offsetLeft;
   selectedIndex -= 1;
 
-  if (selectedIndex === 0) {
-    selectedIndex = 1;
+  if (selectedIndex <= 0) {
+    selectedIndex = 0;
   }
 }
 </script>
@@ -59,17 +61,17 @@ function back() {
       <div>
         <button
           @click="back"
-          class="bg-black/30 text-white text-3xl p-8 rounded-full"
+          class="bg-black/30 text-white text-xl md:text-2xl lg:text-3xl p-2 md:p-4 lg:p-6 rounded-full"
         >
-          ←
+          <ChevronLeft />
         </button>
       </div>
       <div>
         <button
           @click="next"
-          class="bg-black/30 text-white text-3xl p-8 rounded-full"
+          class="bg-black/30 text-white text-xl md:text-2xl lg:text-3xl p-2 md:p-4 lg:p-6 rounded-full"
         >
-          →
+          <ChevronRight />
         </button>
       </div>
     </div>
@@ -80,33 +82,41 @@ function back() {
       <div
         v-for="newitem in newsStore.newsSports"
         :key="newitem.id"
-        class="flex flex-col justify-around w-full h-full gap-2 bg-white shadow-md p-4 rounded-md"
+        class="flex flex-col"
       >
-        <div class="font-bold">
+        <div
+          class="font-medium w-full md:h-44 lg:h-24 flex items-center pl-4 pr-4 bg-gray-200 text-black rounded-t-md"
+        >
           {{ newitem.title }}
         </div>
-        <div>
-          <img
-            :src="newitem.urlToImage === null ? randomUrl : newitem.urlToImage"
-            alt="Photo"
-            class="rounded-md h-[300px]"
-          />
-        </div>
-        <div>
-          {{
-            newitem.description
-              ? newitem.description
-              : newitem.content
-              ? newitem.content
-              : "-"
-          }}
-        </div>
-        <div>
-          <router-link
-            :to="{ name: 'detailsSport', params: { id: newitem.myId } }"
-            class="font-bold text-black"
-            >Details
-          </router-link>
+        <div
+          class="flex flex-col justify-between items-center md:items-baseline w-full h-full gap-2 p-4 bg-white shadow-md rounded-b-md font-light"
+        >
+          <div>
+            <img
+              :src="
+                newitem.urlToImage === null ? randomUrl : newitem.urlToImage
+              "
+              alt="Photo"
+              class="h-[300px]"
+            />
+          </div>
+          <div>
+            {{
+              newitem.description
+                ? newitem.description
+                : newitem.content
+                ? newitem.content
+                : "-"
+            }}
+          </div>
+          <div>
+            <router-link
+              :to="{ name: 'detailsSport', params: { id: newitem.myId } }"
+              class="font-bold text-black"
+              >Details
+            </router-link>
+          </div>
         </div>
       </div>
     </div>
