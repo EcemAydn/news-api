@@ -8,13 +8,7 @@ export const useNewsStore = defineStore("news", () => {
   const newsBusiness = ref([]);
   const selectedCountry = ref("us");
 
-  // const searchNews = computed(() => (search) => {
-  //   return news.value.filter(
-  //     (item) => item.title.includes(search) || item.description.includes(search)
-  //   );
-  // });
-
-  function getApi() {
+  function getApi(search) {
     return new Promise((resolve, reject) => {
       api
         .get("/top-headlines", {
@@ -22,6 +16,7 @@ export const useNewsStore = defineStore("news", () => {
             country: selectedCountry.value,
             category: "general",
             apiKey: import.meta.env.VITE_NEWS_API_KEY,
+            q: search,
           },
         })
         .then((response) => {
@@ -38,7 +33,7 @@ export const useNewsStore = defineStore("news", () => {
     });
   }
 
-  function getApiSports() {
+  function getApiSports(search) {
     return new Promise((resolve, reject) => {
       api
         .get("/top-headlines", {
@@ -46,6 +41,7 @@ export const useNewsStore = defineStore("news", () => {
             country: selectedCountry.value,
             category: "sports",
             apiKey: import.meta.env.VITE_NEWS_API_KEY,
+            q: search,
           },
         })
         .then((response) => {
@@ -62,7 +58,7 @@ export const useNewsStore = defineStore("news", () => {
     });
   }
 
-  function getApiBusiness() {
+  function getApiBusiness(search) {
     return new Promise((resolve, reject) => {
       api
         .get("/top-headlines", {
@@ -70,6 +66,7 @@ export const useNewsStore = defineStore("news", () => {
             country: selectedCountry.value,
             category: "business",
             apiKey: import.meta.env.VITE_NEWS_API_KEY,
+            q: search,
           },
         })
         .then((response) => {

@@ -12,17 +12,14 @@ defineProps({
 
 const newsStore = useNewsStore();
 const dropdownShow = ref(false);
-// let timeout = null;
 const search = ref("");
 const selectedCountry = ref(newsStore.selectedCountry);
-// console.log(navigator.language);
 
-// function searchNews() {
-//   clearTimeout(timeout);
-//   timeout = setTimeout(() => {
-//     newsStore.searchNews(search.value.toLowerCase());
-//   }, 500);
-// }
+function searchNews() {
+  newsStore.getApi(search.value);
+  newsStore.getApiSports(search.value);
+  newsStore.getApiBusiness(search.value);
+}
 
 function dropdown() {
   dropdownShow.value = true;
